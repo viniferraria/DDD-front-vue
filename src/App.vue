@@ -1,23 +1,26 @@
 <template>
-  <div id='teste' class="text-center">
+  <div id="teste" class="text-center">
     <h1>{{ message }}</h1>
+    <div id="teste2">
+      <Table id="table_app"></Table>
+    </div>
   </div>
 </template>
 
 <script>
 import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.css";
-// import HelloWorld from './components/HelloWorld.vue'
+import Table from "./components/Table.vue";
 
 export default {
-  name: "App",
-  data: () => ({
-    message: "Hello"
-  }),
-  // components: {
-  //   HelloWorld
-  // }
-}
+	name: "App",
+	data: () => ({
+		message: "Hello"
+	}),
+	components: {
+		Table
+	}
+};
 </script>
 
 <style>

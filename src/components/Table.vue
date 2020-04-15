@@ -1,47 +1,71 @@
 <template>
-  <div class="table-responsive">
-    <table class="table table-striped table-bordered table-hover table-dark">
-      <thead>
-        <tr> 
-          <th>ID</th>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Edit</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="person in list" v-bind:key="person.id">
-          <th> {{ person.id }}</th>
-          <th> {{ person.name }}</th>
-          <th> {{ person.age }}</th>
-          <button>hey</button>
-        </tr>
-      </tbody>
-    </table>
+  <div id="tableapp">
+    <div class="table-responsive" v-if="list.length > 0">
+      <table class="table table-striped table-bordered table-hover table-dark">
+        <thead>
+          <tr> 
+            <th v-for="key in properties" :key="key">{{ capitalize(key) }}</th>            
+            <th colspan="2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="{ id, name, age } in list" v-bind:key="id">
+            <th> {{ id }}</th>
+            <th> {{ name }}</th>
+            <th> {{ age }}</th>
+            <th colspan="2">
+              <button v-on:click="logId({ id: id })" class="btn btn-primary">Edit</button>
+              <button @click="deleteById({ id: id })" class="btn btn-danger">Delete</button>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+	<div class="no-data" v-else>
+		<h3 class="text-center"> No data </h3>
+	</div>
   </div>
 </template>
 
 <script>
-import "bootstrap/dist/css/bootstrap.css";
-
 export default {
 	name: "Table",
 	data: () => ({
 		list: [
-			{id: 1, name: "Rick", age: 67},
-			{id: 2, name: "Morty", age: 15}  
-		]
-	})
-	// props: {
-	//   msg: String
-	// },
+			{
+				id: 1,
+				name: "Rick",
+				age: 67
+			},
+			{
+				id: 2,
+				name: "Morty",
+				age: 15
+			}
+		],
+	}),
+	methods: {
+		logId({ id }) {
+			console.log(id);
+		},
+		deleteById({ id: paramId }) {
+			console.log(`clicked with id: ${paramId}`);
+			this.list = this.list.filter( ({ id }) => id !== paramId);
+		},
+		capitalize(string) {
+			return `${string.charAt(0).toUpperCase()}${string.substring(1)}`;
+		}
+	},
+	computed: {
+		properties() {
+			return Object.keys(this.list[0]) ;
+		},
+	},
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 h3 {
   margin: 40px 0 0;
 }
@@ -59,4 +83,10 @@ a {
 #table-app {
   background-color: #000000
 }
+
+button {
+	margin-right: 3px;
+	margin-left: 3px;
+}
+
 </style>

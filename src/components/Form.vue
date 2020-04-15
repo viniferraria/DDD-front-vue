@@ -1,14 +1,14 @@
 <template>
-	<div id="edit-form">
+	<div id="details">
 		<form @submit.prevent="onSubmit">
 			<fieldset>
 				<div class="form-group">
 					<label for="name">Name</label>
-					<input type="text" id="name" placeholder="Name" v-model="person.name" required autocomplete="false"/>
+					<input :readonly="!candEdit" type="text" id="name" placeholder="Name" v-model="person.name" required autocomplete="false"/>
 				</div>
 				<div class="form-group">
 					<label for="age">Age</label>
-					<input type="number" id="age" placeholder="Age" v-model="person.age" required autocomplete="false"/>
+					<input :readonly="!candEdit" type="number" id="age" placeholder="Age" v-model="person.age" required autocomplete="false"/>
 				</div>
 				<button type="submit" :disabled="!validForm" class="btn btn-primary">Submit</button>
 			</fieldset>
@@ -54,6 +54,3 @@ export default {
 <style>
 	
 </style>
-
-
-// <EditForm @submited="log" id=1></EditForm>

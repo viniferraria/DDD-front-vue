@@ -16,6 +16,7 @@
             <th colspan="2">
               <button v-on:click="logId({ id: id })" class="btn btn-primary">Edit</button>
               <button @click="deleteById({ id: id })" class="btn btn-danger">Delete</button>
+              <button v-on:click="logId({ id: id })" class="btn btn-info">Details</button>
             </th>
           </tr>
         </tbody>
@@ -30,20 +31,22 @@
 <script>
 export default {
 	name: "Table",
-	data: () => ({
-		list: [
-			{
-				id: 1,
-				name: "Rick",
-				age: 67
-			},
-			{
-				id: 2,
-				name: "Morty",
-				age: 15
-			}
-		],
-	}),
+	data() {
+		return {
+			list: [
+				{
+					id: 1,
+					name: "Rick",
+					age: 67
+				},
+				{
+					id: 2,
+					name: "Morty",
+					age: 15
+				}
+			]
+		}
+	},
 	methods: {
 		logId({ id }) {
 			console.log(id);

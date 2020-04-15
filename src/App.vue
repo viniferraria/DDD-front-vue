@@ -4,7 +4,7 @@
 		<h1>{{ message }}</h1>
 	</div>
     <div id="table">
-      <EditForm id="1"></EditForm>
+      <EditForm @submited="log" id=1></EditForm>
     </div>
   </div>
 </template>
@@ -17,12 +17,21 @@ import EditForm from "./components/EditForm.vue";
 
 export default {
 	name: "App",
-	data: () => ({
-		message: "Hello"
-	}),
+	data() {
+		return {
+			message: "Hello",
+		};
+	},
 	components: {
 		// Table,
 		EditForm
+	},
+	methods: {
+		log(formObj){
+			let output = JSON.stringify(formObj);
+			console.log(output);
+			this.message = output;
+		},
 	}
 };
 </script>
@@ -36,8 +45,6 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 10px;
-  background-color: #000000;
-  color: #FFFFFF
 }
 
 </style>

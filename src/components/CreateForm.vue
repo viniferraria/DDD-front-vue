@@ -1,5 +1,11 @@
 <template>
-	<div id="edit-form">
+	<div id="create-form">
+		<p v-if="errors.length">
+		<b>Please correct the following error(s):</b>
+		<ul>
+			<li v-for="(error, index) in errors" v-bind:key="index">{{ error }}</li>
+		</ul>
+		</p>
 		<form @submit.prevent="onSubmit">
 			<fieldset>
 				<div class="form-group">
@@ -19,12 +25,12 @@
 
 <script>
 export default {
-	name: "EditForm",
+	name: "CreateForm",
 	data() {
 		return {
 			person: {
-				name: "Timmy",
-				age: 21,
+				name: null,
+				age: null,
 			},
 			errors: [
 			],
@@ -51,9 +57,7 @@ export default {
 };
 </script>
 
+
 <style>
 	
 </style>
-
-
-// <EditForm @submited="log" id=1></EditForm>

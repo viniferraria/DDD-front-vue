@@ -45,7 +45,7 @@ export default {
 					age: 15
 				}
 			]
-		}
+		};
 	},
 	methods: {
 		logId({ id }) {

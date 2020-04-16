@@ -1,16 +1,22 @@
 <template>
-	<div id="details">
+	<div id="form">
+		<p v-if="errors.length">
+		<b>Please correct the following error(s):</b>
+		<ul>
+			<li v-for="(error, index) in errors" v-bind:key="index">{{ error }}</li>
+		</ul>
+		</p>
 		<form @submit.prevent="onSubmit">
 			<fieldset>
 				<div class="form-group">
 					<label for="name">Name</label>
-					<input :readonly="!candEdit" type="text" id="name" placeholder="Name" v-model="person.name" required autocomplete="false"/>
+					<input :readonly="!canEdit" type="text" id="name" placeholder="Name" v-model="person.name" required autocomplete="false"/>
 				</div>
 				<div class="form-group">
 					<label for="age">Age</label>
-					<input :readonly="!candEdit" type="number" id="age" placeholder="Age" v-model="person.age" required autocomplete="false"/>
+					<input :readonly="!canEdit" type="number" id="age" placeholder="Age" v-model="person.age" required autocomplete="false"/>
 				</div>
-				<button type="submit" :disabled="!validForm" class="btn btn-primary">Submit</button>
+				<button v-if="canEdit" type="submit" :disabled="!validForm" class="btn btn-primary">Submit</button>
 			</fieldset>
 		</form>
 	</div>
@@ -19,12 +25,12 @@
 
 <script>
 export default {
-	name: "EditForm",
+	name: "Form",
 	data() {
 		return {
 			person: {
-				name: "Timmy",
-				age: 21,
+				name: this.retriviedPerson && this.retriviedPerson.name || "",
+				age: this.retriviedPerson && this.retriviedPerson.age || "",
 			},
 			errors: [
 			],
@@ -46,7 +52,12 @@ export default {
 		}
 	},
 	props: {
-		id: String,
+		canEdit: {
+			type: Boolean
+		},
+		retriviedPerson: {
+			type: Object
+		},
 	},
 };
 </script>

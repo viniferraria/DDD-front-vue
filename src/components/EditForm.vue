@@ -1,52 +1,37 @@
 <template>
 	<div id="edit-form">
-		<form @submit.prevent="onSubmit">
-			<fieldset>
-				<div class="form-group">
-					<label for="name">Name</label>
-					<input type="text" id="name" placeholder="Name" v-model="person.name" required autocomplete="false"/>
-				</div>
-				<div class="form-group">
-					<label for="age">Age</label>
-					<input type="number" id="age" placeholder="Age" v-model="person.age" required autocomplete="false"/>
-				</div>
-				<button type="submit" :disabled="!validForm" class="btn btn-primary">Submit</button>
-			</fieldset>
-		</form>
+		<Form @submited="log" :retriviedPerson="person" v-bind:canEdit="true"></Form>
 	</div>
 </template>
 
 
 <script>
+import Form from "./Form";
+
 export default {
 	name: "EditForm",
+	components: {
+		Form
+	},
+	methods: {
+		log(formObj){
+			let output = JSON.stringify(formObj);
+			console.log(`loggin from edit ${output}`);
+			this.message = output;
+		},
+	},
 	data() {
 		return {
 			person: {
-				name: "Timmy",
-				age: 21,
-			},
-			errors: [
-			],
+				name: "vini",
+				age: 21
+			}
 		};
 	},
-	methods: {
-		onSubmit() {
-			if(this.validForm) {
-				this.$emit("submited", this.person);
-			} else {
-				if(!this.person.name.legnth > 4) this.errors.push("Name must be bigger");
-				if(!this.person.age) this.errors.push("Age required");
-			}
-		},
-	},
 	computed: {
-		validForm() {
-			return this.person.name.length > 4 && this.person.age;
-		}
 	},
 	props: {
-		id: String,
+		id: Number,
 	},
 };
 </script>
@@ -54,6 +39,3 @@ export default {
 <style>
 	
 </style>
-
-
-// <EditForm @submited="log" id=1></EditForm>

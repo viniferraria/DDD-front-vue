@@ -1,7 +1,15 @@
 <template>
-	<div id="edit-form">
-		<Form @submited="log" :retriviedAnimal="animal" v-bind:canEdit="true"></Form>
+	<div>
+		<div v-if="isLoading" class="d-flex justify-content-center">
+			<div class="spinner-border" role="status">
+				<span class="sr-only">Loading...</span>
+			</div>
+		</div>
+		<div v-else id="edit-form">
+			<Form @submited="log" :retriviedAnimal="animal" v-bind:canEdit="true"></Form>
+		</div>
 	</div>
+	
 </template>
 
 
@@ -15,29 +23,32 @@ export default {
 	components: {
 		Form
 	},
-	created() {
+	mounted() {
 		this.fetchById(this.id);
+		console.log(`after mounted the data is ${JSON.stringify(this.animal)}`);
 	},
 	data() {
 		return {
 			animal: new Zoo({}),
+			isLoading: false
 		};
 	},
 	methods: {
 		log(formObj){
 			let output = JSON.stringify(formObj);
 			console.log(`log from edit ${output}`);
-			this.message = output;
 		},
-		fetchById(id) {
-			console.log(`inside function with id: ${id}`);
-			fetch(getByIdUrl({ id }))
-				.then(res => res.json())
-				.then(data => {
-					console.log(`edit form fetched: ${JSON.stringify(data)}`);
-					this.animal = data;
-					console.log(`edit form data: ${JSON.stringify(this.animal)}`);
-				});
+		async fetchById(id) {
+			try {
+				this.isLoading = true;
+				let res = await fetch(getByIdUrl({ id: id }));
+				let data = await res.json();
+				this.animal = data;
+			} catch (err) {
+				console.log(err);
+			} finally {
+				this.isLoading = false;
+			}
 		}
 	},
 	computed: {
@@ -51,3 +62,21 @@ export default {
 <style>
 	
 </style>
+
+
+
+
+
+// computed: {
+//   fullName: {
+//     // getter
+//     get: function () {
+//       return this.firstName + ' ' + this.lastName
+//     },
+//     // setter
+//     set: function (newValue) {
+//       var names = newValue.split(' ')
+//       this.firstName = names[0]
+//       this.lastName = names[names.length - 1]
+//     }
+//   }

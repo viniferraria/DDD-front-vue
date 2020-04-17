@@ -10,11 +10,11 @@
 			<fieldset>
 				<div class="form-group">
 					<label for="name">Name</label>
-					<input :readonly="!canEdit" type="text" id="name" placeholder="Name" v-model="this.animal.name" required autocomplete="false"/>
+					<input :readonly="!canEdit" type="text" id="name" placeholder="Name" v-model="animal.name" required autocomplete="false"/>
 				</div>
 				<div class="form-group">
-					<label for="specie">specie</label>
-					<input :readonly="!canEdit" type="text" id="specie" placeholder="specie" v-model="this.animal.specie" required autocomplete="false"/>
+					<label for="specie">Specie</label>
+					<input :readonly="!canEdit" type="text" id="specie" placeholder="Specie" v-model="animal.specie" required autocomplete="false"/>
 				</div>
 				<button v-if="canEdit" type="submit" :disabled="!isValidForm" class="btn btn-primary">Submit</button>
 			</fieldset>
@@ -30,42 +30,41 @@ export default {
 	name: "Form",
 	data() {
 		return {
-			animal: new Zoo({}),
+			animal: null,
 			errors: [
 			],
 		};
 	},
 	created() {
-		console.log(`form received ${JSON.stringify(this.retriviedAnimal)}`);
 		this.animal = this.retriviedAnimal || new Zoo({name: "", specie: ""});
-		console.log(`Form created with: ${this.props}, ${JSON.stringify(this.retriviedAnimal)}`);
 	},
 	methods: {
 		onSubmit() {
 			if(this.isValidForm) {
 				this.$emit("submited", this.animal);
 			} else {
-				if(!this.isValidName) this.errors.push("Name must be bigger");
-				if(!this.isValidSpecie) this.errors.push("specie required");
+				if(!this.isValidName) this.errors.push("Name required");
+				if(!this.isValidSpecie) this.errors.push("Specie required");
 			}
 		},
 	},
 	computed: {
-		isValidForm() {
-			return this.isValidName && this.isValidSpecie;
-		},
 		isValidName() {
+			console.log(this.animal.name);
 			return this.animal.name.length > 4;
 		},
 		isValidSpecie() {
-			return  this.animal.specie > 4;
+			return this.animal.specie.length > 4;
 		},
-		name() {
-			return this.animal.name || " ";
+		isValidForm() {
+			return this.isValidName && this.isValidSpecie;
 		},
-		specie() {
-			return this.retriviedAnimal.specie || " ";
-		}
+		// name() {
+		// 	return this.animal.name || " ";
+		// },
+		// specie() {
+		// 	return this.retriviedAnimal.specie || " ";
+		// }
 	},
 	props: {
 		canEdit: {

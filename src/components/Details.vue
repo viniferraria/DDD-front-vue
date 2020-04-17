@@ -1,6 +1,13 @@
 <template>
 	<div id="details">
-		<Form v-bind:canEdit="false" :retriviedAnimal="this.animal"></Form>
+		<div v-if="isLoading" class="d-flex justify-content-center">
+			<div class="spinner-border" role="status">
+				<span class="sr-only">Loading...</span>
+			</div>
+		</div>
+		<div v-else id="details-form">
+			<Form v-bind:canEdit="false" :retriviedAnimal="this.animal"></Form>
+		</div>
 	</div>
 </template>
 
@@ -14,23 +21,27 @@ export default {
 	data() {
 		return {
 			animal: new Zoo({}),
+			isLoading: false,
 		};
+	},
+	created() {
+		this.fetchById(this.id);
 	},
 	components: {
 		Form
 	},
-	created() {
-		console.log(this.id);
-		this.fetchById(this.id);
-	},
 	methods: {
-		fetchById(id) {
-			fetch(getByIdUrl({ id }))
-				.then(res => res.json())
-				.then(data => {
-					this.animal = data;
-				})
-				.catch(err => console.log(`An error occurred: ${err}`));
+		async fetchById(id) {
+			try {
+				this.isLoading = true;
+				let res = await fetch(getByIdUrl({ id: id }));
+				let data = await res.json();
+				this.animal = data;
+			} catch (err) {
+				console.log(err);
+			} finally {
+				this.isLoading = false;
+			}
 		}
 	},
 	computed: {

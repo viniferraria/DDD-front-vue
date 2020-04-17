@@ -4,15 +4,17 @@
       <table class="table table-striped table-bordered table-hover table-dark">
         <thead>
           <tr> 
-            <th v-for="key in properties" :key="key">{{ capitalize(key) }}</th>            
+            <th>ID</th>          
+            <th>Name</th>          
+            <th>Specie</th>          
             <th colspan="2">Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="{ id, name, age } in list" v-bind:key="id">
-            <th> {{ id }}</th>
-            <th> {{ name }}</th>
-            <th> {{ age }}</th>
+          <tr v-for="{ id, name, specie } in list" v-bind:key="id">
+            <th>{{ id }}</th>
+            <th>{{ name }}</th>
+            <th>{{ specie }}</th>
             <th colspan="2">
               <button v-on:click="logId({ id: id })" class="btn btn-primary">Edit</button>
               <button @click="deleteById({ id: id })" class="btn btn-danger">Delete</button>
@@ -29,22 +31,16 @@
 </template>
 
 <script>
+import { fetchTableUrl, deleteById } from "../helpers/constants";
+// import Zoo from "../models/Zoo";
 export default {
 	name: "Table",
+	created() {
+		this.fetchTable();
+	},
 	data() {
 		return {
-			list: [
-				{
-					id: 1,
-					name: "Rick",
-					age: 67
-				},
-				{
-					id: 2,
-					name: "Morty",
-					age: 15
-				}
-			]
+			list: []
 		};
 	},
 	methods: {
@@ -52,18 +48,27 @@ export default {
 			console.log(id);
 		},
 		deleteById({ id: paramId }) {
-			console.log(`clicked with id: ${paramId}`);
-			this.list = this.list.filter( ({ id }) => id !== paramId);
+			console.log(paramId);
+			deleteById;
+			// fetch(deleteById({id: paramId}), {
+			// 	method: "delete",
+			// })
+			// 	.then(res => res.json())
+			// 	.then(json => console.log(json));
 		},
 		capitalize(string) {
 			return `${string.charAt(0).toUpperCase()}${string.substring(1)}`;
+		},
+		fetchTable() {
+			fetch(fetchTableUrl)
+				.then(res => res.json())
+				.then(data => {
+					this.list = data;
+				});
 		}
 	},
 	computed: {
-		properties() {
-			return Object.keys(this.list[0]) ;
-		},
-	},
+	}
 };
 </script>
 

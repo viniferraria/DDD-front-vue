@@ -17,9 +17,9 @@
 		<CreateForm></CreateForm>
 		<br>
     </div>
-    <div id="edit">
+    <div id="details">
 		<h1>Details</h1>
-		<Details v-bind:id="1"></Details>
+		<Details v-bind:id="2"></Details>
     </div>
   </div>
 </template>
@@ -29,8 +29,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.css";
 import Table from "./components/Table.vue";
 import EditForm from "./components/EditForm.vue";
-import CreateForm from "./components/EditForm.vue";
-import Details from "./components/EditForm.vue";
+import CreateForm from "./components/CreateForm.vue";
+import Details from "./components/Details.vue";
 
 export default {
 	name: "App",

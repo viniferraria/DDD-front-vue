@@ -1,7 +1,9 @@
 <template>
 	<div id="create">
-		<div v-for="error in errors" class="alert alert-success" role="alert" :key="error">
-			{{ error }}
+		<div v-show="!isEmpty">
+			<div v-for="error in errors" class="alert alert-success" role="alert" :key="error">
+				{{ error }}
+			</div>
 		</div>
 		<div id="create-form">
 			<Form @submited="createAnimal" v-bind:canEdit="true"></Form>
@@ -25,12 +27,16 @@ export default {
 	},
 	methods: {
 		async createAnimal(formZoo) {
-			let res = await fetch(createUrl, {
-				method: "post",
-				body: JSON.stringify(formZoo), 
-				headers: new Headers({"Content-Type": "application/json"})
-			});
-			console.log(await res.json());
+			try {
+				let res = await fetch(createUrl, {
+					method: "post",
+					body: JSON.stringify(formZoo), 
+					headers: new Headers({"Content-Type": "application/json"})
+				});
+				console.log(await res.json());
+			} catch (err) {
+				this.errors.push(err);
+			}
 		},
 	},
 	computed: {

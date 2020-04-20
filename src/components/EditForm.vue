@@ -9,7 +9,6 @@
 			<Form @submited="log" :retriviedAnimal="animal" v-bind:canEdit="true"></Form>
 		</div>
 	</div>
-	
 </template>
 
 
@@ -25,7 +24,6 @@ export default {
 	},
 	mounted() {
 		this.fetchById(this.id);
-		console.log(`after mounted the data is ${JSON.stringify(this.animal)}`);
 	},
 	data() {
 		return {
@@ -34,6 +32,7 @@ export default {
 		};
 	},
 	methods: {
+		//TODO redirect to route
 		log(formObj){
 			let output = JSON.stringify(formObj);
 			console.log(`log from edit ${output}`);

@@ -1,6 +1,11 @@
 <template>
   <div id="tableapp">
-    <div class="table-responsive" v-if="list.length > 0">
+	<div v-if="isLoading" class="d-flex justify-content-center">
+		<div class="spinner-border" role="status">
+			<span class="sr-only">Loading...</span>
+		</div>
+	</div>
+    <div v-else-if="list.length > 0" class="table-responsive">
       <table class="table table-striped table-bordered table-hover table-dark">
         <thead>
           <tr> 
@@ -15,24 +20,25 @@
             <th>{{ id }}</th>
             <th>{{ name }}</th>
             <th>{{ specie }}</th>
-            <th colspan="2">
+            <th>
               <button v-on:click="logId({ id: id })" class="btn btn-primary">Edit</button>
-              <button @click="deleteById({ id: id })" class="btn btn-danger">Delete</button>
-              <button v-on:click="logId({ id: id })" class="btn btn-info">Details</button>
+              <button @click="deleteById({ id })" class="btn btn-danger">Delete</button>
+              <button @click="logId({ id: id })" class="btn btn-info">Details</button>
             </th>
           </tr>
         </tbody>
       </table>
     </div>
-	<div class="no-data" v-else>
+	<div v-else class="no-data">
 		<h3 class="text-center"> No data </h3>
 	</div>
   </div>
 </template>
 
 <script>
-import { fetchTableUrl, deleteById } from "../helpers/constants";
+import { fetchTableUrl, deleteUrl } from "../helpers/constants";
 // import Zoo from "../models/Zoo";
+//TODO hook useEffect
 export default {
 	name: "Table",
 	created() {
@@ -40,31 +46,40 @@ export default {
 	},
 	data() {
 		return {
-			list: []
+			list: [],
+			isLoading: false
 		};
 	},
 	methods: {
 		logId({ id }) {
 			console.log(id);
 		},
-		deleteById({ id: paramId }) {
-			console.log(paramId);
-			deleteById;
-			// fetch(deleteById({id: paramId}), {
-			// 	method: "delete",
-			// })
-			// 	.then(res => res.json())
-			// 	.then(json => console.log(json));
+		async deleteById({ id: deleteId }) {
+			try {
+				const res = await fetch(deleteUrl({ id: deleteId }), {
+					method: "delete",
+				});
+				// await res.json();
+				if (res.status === 200)
+					this.list = this.list.filter( ({ id }) => id !== deleteId );
+			} catch (err) {
+				console.log(err);
+			}
 		},
 		capitalize(string) {
 			return `${string.charAt(0).toUpperCase()}${string.substring(1)}`;
 		},
-		fetchTable() {
-			fetch(fetchTableUrl)
-				.then(res => res.json())
-				.then(data => {
-					this.list = data;
-				});
+		async fetchTable() {
+			try {
+				this.isLoading = true;
+				const res = await fetch(fetchTableUrl);
+				const data = await res.json();
+				this.list = data;
+			} catch (err) {
+				console.log(err);
+			} finally {
+				this.isLoading = false;
+			}
 		}
 	},
 	computed: {

@@ -36,7 +36,7 @@ export default {
 	name: "App",
 	data() {
 		return {
-			message: "Hello",
+			message: "Zoo - DDD",
 		};
 	},
 	components: {

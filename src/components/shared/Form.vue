@@ -1,71 +1,101 @@
 <template>
 	<div id="form">
-		<p v-if="errors.length > 0">
-		<b>Please correct the following error(s):</b>
-		<ul>
-			<li v-for="(error, index) in errors" v-bind:key="index">{{ error }}</li>
-		</ul>
-		</p>
-		<form @submit.prevent="onSubmit">
-			<fieldset>
-				<div class="form-group">
-					<label for="name">Name</label>
-					<input :readonly="!canEdit" type="text" id="name" placeholder="Name" v-model="animal.name" autocomplete="false"/>
-				</div>
-				<div class="form-group">
-					<label for="specie">Specie</label>
-					<input :readonly="!canEdit" type="text" id="specie" placeholder="Specie" v-model="animal.specie" autocomplete="false"/>
-				</div>
-				<button v-if="canEdit" type="submit" :disabled="!isValidForm" :class="isValidForm ? 'btn btn-primary' : 'btn btn-primary disabled'">Submit</button>
-			</fieldset>
-		</form>
+		<div v-if="isLoading" class="d-flex justify-content-center">
+			<div class="spinner-border" role="status">
+				<span class="sr-only">Loading...</span>
+			</div>
+		</div>
+		<div v-else-if="!isEmpty">
+			<div v-for="error in errors" class="alert alert-danger" role="alert" :key="error">
+				{{ error }}
+			</div>
+			<div class="alert alert-danger">
+				<a href="/"> Go home </a>
+			</div>
+		</div>
+		<div v-else id="form">
+			<form @submit.prevent="onSubmit">
+				<fieldset>
+					<div class="form-group">
+						<label for="name">Name</label>
+						<input :readonly="!canEdit" type="text" id="name" placeholder="Name" v-model="animal.name" autocomplete="false"/>
+					</div>
+					<div class="form-group">
+						<label for="specie">Specie</label>
+						<input :readonly="!canEdit" type="text" id="specie" placeholder="Specie" v-model="animal.specie" autocomplete="false"/>
+					</div>
+					<button v-if="canEdit" type="submit" :disabled="!isValidForm" :class="isValidForm ? 'btn btn-primary' : 'btn btn-primary disabled'">Submit</button>
+				</fieldset>
+			</form>
+		</div>
 	</div>
 </template>
 
 
 <script>
-import Zoo from "../../models/Zoo";
+import { getByIdUrl } from "../../helpers/constants";
 
 export default {
 	name: "Form",
 	data() {
 		return {
-			animal: null,
-			errors: [
-			],
+			isLoading: false,
+			animal: {
+				id: this.$route.params.id,
+				name: "",
+				specie: ""
+			},
+			errors: [],
 		};
 	},
-	created() {
-		this.animal = this.retriviedAnimal || new Zoo({});
+	mounted() {
+		if(this.animal.id){
+			this.fetchById(this.animal.id);
+		}
 	},
 	methods: {
 		onSubmit() {
 			if(this.isValidForm) {
 				this.$emit("submited", this.animal);
 			} 
-			/* else { */
-			// 	if(!this.isValidName) this.errors.push("Name required");
-			// 	if(!this.isValidSpecie) this.errors.push("Specie required");
-			// }
 		},
+		async fetchById(id) {
+			try {
+				this.isLoading = true;
+				const res = await fetch(getByIdUrl({ id: id }));
+				const data = await res.json();
+				if(data.name && data.specie)
+					this.animal = data;
+				else 
+					throw "Animal not found";
+			} catch (err) {
+				this.errors.push(err);
+			} finally {
+				this.isLoading = false;
+			}
+		}
 	},
 	computed: {
 		isValidName() {
-			return this.animal.name.length >= 4;
+			if(this.animal.name) 
+				return this.animal.name.length >= 4;
+			return false;
 		},
 		isValidSpecie() {
-			return this.animal.specie.length >= 4;
+			if(this.animal.specie)
+				return this.animal.specie.length >= 4;
+			return false;
 		},
 		isValidForm() {
 			return this.isValidName && this.isValidSpecie;
 		},
+		isEmpty() {
+			return this.errors.length === 0;
+		}
 	},
 	props: {
 		canEdit: {
 			type: Boolean
-		},
-		retriviedAnimal: {
-			type: Object
 		},
 	},
 };

@@ -3,34 +3,32 @@
 	<div id="sidenav">
 		<h1>{{ message }}</h1>
 	</div>
-    <div id="Table">
-		<Table></Table>
-		<br>
-    </div>
-    <div id="edit">
-		<h1>Edit</h1>
-		<EditForm v-bind:id="1"></EditForm>
-		<br>
-    </div>
-    <div id="create">
-		<h1>Create</h1>
-		<CreateForm></CreateForm>
-		<br>
-    </div>
-    <div id="details">
-		<h1>Details</h1>
-		<Details v-bind:id="2"></Details>
-    </div>
+	<ul class="nav nav-pills">
+		<li class="nav-item">
+			<router-link to="/" v-slot="{ href }">
+				<a class="nav-link" :class="{active: isActive}" :href="href">
+					Home
+				</a>
+			</router-link> 
+		</li>
+		<li class="nav-item">
+			<router-link to="/add" v-slot="{ href }">
+				<a class="nav-link" :class="{active: !isActive}" :href="href">
+					Create
+				</a>
+			</router-link> 
+		</li>
+	</ul>
+	<br>
+	<div>
+		<router-view></router-view>
+	</div>
   </div>
 </template>
 
 <script>
 import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.css";
-import Table from "./components/Table.vue";
-import EditForm from "./components/EditForm.vue";
-import CreateForm from "./components/CreateForm.vue";
-import Details from "./components/Details.vue";
 
 export default {
 	name: "App",
@@ -39,13 +37,10 @@ export default {
 			message: "Zoo - DDD",
 		};
 	},
-	components: {
-		Table,
-		EditForm,
-		CreateForm,
-		Details
-	},
-	methods: {
+	computed: {
+		isActive() {
+			return this.$router.currentRoute.path === "/";
+		}
 	}
 };
 </script>

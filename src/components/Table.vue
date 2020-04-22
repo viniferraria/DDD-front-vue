@@ -21,9 +21,9 @@
             <th>{{ name }}</th>
             <th>{{ specie }}</th>
             <th>
-              <button v-on:click="logId({ id: id })" class="btn btn-primary">Edit</button>
+              <button @click="pushDetails({ id: id })" class="btn btn-info">Details</button>
+              <button v-on:click="pushEdit({id: id })" class="btn btn-primary">Edit</button>
               <button @click="deleteById({ id })" class="btn btn-danger">Delete</button>
-              <button @click="logId({ id: id })" class="btn btn-info">Details</button>
             </th>
           </tr>
         </tbody>
@@ -51,8 +51,11 @@ export default {
 		};
 	},
 	methods: {
-		logId({ id }) {
-			console.log(id);
+		pushEdit({ id }) {
+			this.$router.push({path: `edit/${id}`});
+		},
+		pushDetails({ id  }) {
+			this.$router.push({path: `details/${id}`});
 		},
 		async deleteById({ id: deleteId }) {
 			try {
@@ -66,9 +69,6 @@ export default {
 				console.log(err);
 			}
 		},
-		capitalize(string) {
-			return `${string.charAt(0).toUpperCase()}${string.substring(1)}`;
-		},
 		async fetchTable() {
 			try {
 				this.isLoading = true;
@@ -80,7 +80,10 @@ export default {
 			} finally {
 				this.isLoading = false;
 			}
-		}
+		},
+		capitalize(string) {
+			return `${string.charAt(0).toUpperCase()}${string.substring(1)}`;
+		},
 	},
 	computed: {
 	}

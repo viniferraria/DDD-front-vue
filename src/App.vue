@@ -4,22 +4,20 @@
 		<h1>{{ message }}</h1>
 	</div>
 	<ul class="nav nav-pills">
-		<li class="nav-item">
-			<router-link to="/" v-slot="{ href }">
-				<a class="nav-link" :class="{active: isActive}" :href="href">
-					Home
-				</a>
-			</router-link> 
-		</li>
-		<li class="nav-item">
-			<router-link to="/add" v-slot="{ href }">
-				<a class="nav-link" :class="{active: !isActive}" :href="href">
-					Create
-				</a>
+		<li class="nav-item"
+			v-for="(tab, index) in tabs"
+			:key="index"
+			@click="selectedTab = tab.path">
+			<router-link :to="tab.path" v-slot="{ href }">
+				<a class="nav-link"
+					:class="{active: selectedTab === tab.path}" 
+					:href="href">
+					{{ tab.name }}</a>
 			</router-link> 
 		</li>
 	</ul>
 	<br>
+	<!-- <div v-show="selectedTab === '/'"> -->
 	<div>
 		<router-view></router-view>
 	</div>
@@ -35,13 +33,13 @@ export default {
 	data() {
 		return {
 			message: "Zoo - DDD",
+			tabs: [
+				{ name: "Home", path: "/"},
+				{ name: "Create", path: "/add"}
+			],
+			selectedTab: this.$router.currentRoute.path
 		};
 	},
-	computed: {
-		isActive() {
-			return this.$router.currentRoute.path === "/";
-		}
-	}
 };
 </script>
 

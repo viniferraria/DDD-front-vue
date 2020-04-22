@@ -7,8 +7,11 @@
 </template>
 
 <script>
+// import Vue from "vue";
 import Form from "./shared/Form";
 import { editUrl } from "../helpers/constants";
+
+// let eventBus = new Vue();
 
 export default {
 	name: "EditForm",

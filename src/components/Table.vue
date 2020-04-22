@@ -37,8 +37,7 @@
 
 <script>
 import { fetchTableUrl, deleteUrl } from "../helpers/constants";
-// import Zoo from "../models/Zoo";
-//TODO hook useEffect
+
 export default {
 	name: "Table",
 	created() {
@@ -62,7 +61,6 @@ export default {
 				const res = await fetch(deleteUrl({ id: deleteId }), {
 					method: "delete",
 				});
-				// await res.json();
 				if (res.status === 200)
 					this.list = this.list.filter( ({ id }) => id !== deleteId );
 			} catch (err) {

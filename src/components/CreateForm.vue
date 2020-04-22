@@ -34,6 +34,7 @@ export default {
 					headers: new Headers({"Content-Type": "application/json"})
 				});
 				console.log(await res.json());
+				setTimeout(this.$router.replace("/"), 3);
 			} catch (err) {
 				this.errors.push(err);
 			}

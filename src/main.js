@@ -9,12 +9,14 @@ import Table from "./components/Table.vue";
 import EditForm from "./components/EditForm.vue";
 import CreateForm from "./components/CreateForm.vue";
 import Details from "./components/Details.vue";
+import File from "./components/File.vue";
 
 const routes = [
 	{ path: "/", component: Table },
 	{ path: "/edit/:id", component: EditForm },
 	{ path: "/add/", component: CreateForm },
-	{ path: "/details/:id", component: Details }
+	{ path: "/details/:id", component: Details },
+	{ path: "/upload", component: File }
 ];
 
 const router = new VueRouter({

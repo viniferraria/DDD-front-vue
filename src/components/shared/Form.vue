@@ -15,17 +15,21 @@
 		</div>
 		<div v-else id="form">
 			<form @submit.prevent="onSubmit">
-				<fieldset>
-					<div class="form-group">
-						<label for="name">Name</label>
-						<input :readonly="!canEdit" type="text" id="name" placeholder="Name" v-model="animal.name" autocomplete="false"/>
-					</div>
-					<div class="form-group">
-						<label for="specie">Specie</label>
-						<input :readonly="!canEdit" type="text" id="specie" placeholder="Specie" v-model="animal.specie" autocomplete="false"/>
-					</div>
-					<button v-if="canEdit" type="submit" :disabled="!isValidForm" :class="isValidForm ? 'btn btn-primary' : 'btn btn-primary disabled'">Submit</button>
-				</fieldset>
+				<div class="form-row align-items-center">
+					<fieldset>
+						<div class="col-auto">
+							<label class="sr-only" for="name">Name</label>
+							<input :readonly="!canEdit" class="form-control mb-2" type="text" id="name" placeholder="Name" v-model="animal.name" autocomplete="false"/>
+						</div>
+						<div class="col-auto">
+							<label class="sr-only" for="specie">Specie</label>
+							<input :readonly="!canEdit" :class="(!canEdit)? 'form-control mb-2': 'form-control mb-2'"  type="text" id="specie" placeholder="Specie" v-model="animal.specie" autocomplete="false"/>
+						</div>
+						<div class="col-auto">
+							<button v-if="canEdit" type="submit" :disabled="!isValidForm" :class="(isValidForm) ? 'btn btn-primary' : 'btn btn-primary disabled'">Submit</button>
+						</div>
+					</fieldset>
+				</div>
 			</form>
 		</div>
 	</div>

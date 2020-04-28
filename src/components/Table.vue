@@ -17,14 +17,14 @@
         </thead>
         <tbody>
           <tr v-for="{ id, name, specie } in list" v-bind:key="id">
-            <th>{{ id }}</th>
-            <th>{{ name }}</th>
-            <th>{{ specie }}</th>
-            <th>
+            <td>{{ id }}</th>
+            <td>{{ name }}</th>
+            <td>{{ specie }}</th>
+            <td>
               <button @click="pushDetails({ id: id })" class="btn btn-info">Details</button>
               <button v-on:click="pushEdit({id: id })" class="btn btn-primary">Edit</button>
               <button @click="deleteById({ id })" class="btn btn-danger">Delete</button>
-            </th>
+            </td>
           </tr>
         </tbody>
       </table>

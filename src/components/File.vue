@@ -51,6 +51,7 @@ export default {
 				formData.append("file", this.file);
 				this.isLoading = true;
 				const res = await fetch(bulkUrl, {
+					headers: {"Content-Type": "multipart/form-data"},
 					method: "post",
 					body: formData,
 				});

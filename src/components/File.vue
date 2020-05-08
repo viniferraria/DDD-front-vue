@@ -18,8 +18,11 @@
 		</div>
 		<div id="form">
 			<form @submit.prevent="onSubmit">
-				<div class="form-group">
-					<input type="file" class="form-control-file" @change="handleFileUpload">
+				<div class="input-group mb-3">
+					<div class="custom-file">
+						<input type="file" id="fileInput" class="form-control-file" @change="handleFileUpload">
+						<label class="custom-file-label" for="fileInput"> {{ fileLabel }} </label>
+					</div>
 				</div>
 				<div class="form-group">
 					<button class="btn btn-primary" type="submit">Submit</button>
@@ -77,6 +80,13 @@ export default {
 		isEmpty(){
 			return this.errors.length === 0;
 		},
+		fileName() {
+			return (this.file && this.file.name);
+		},
+		fileLabel() {
+			return this.fileName || "Choose a file";
+			// return name;
+		}
 	}
 };
 </script>

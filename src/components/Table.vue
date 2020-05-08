@@ -21,8 +21,8 @@
 						<td>{{ name }}</td>
 						<td>{{ specie }}</td>
 						<td>
-							<button @click="pushDetails({ id: id })" class="btn btn-info">Details</button>
-							<button v-on:click="pushEdit({id: id })" class="btn btn-primary">Edit</button>
+							<!-- <button @click="pushDetails({ id: id })" class="btn btn-info">Details</button> -->
+							<button v-on:click="pushEdit({ id: id })" class="btn btn-primary">Edit</button>
 							<button @click="deleteById({ id })" class="btn btn-danger">Delete</button>
 						</td>
 					</tr>
@@ -53,9 +53,9 @@ export default {
 		pushEdit({ id }) {
 			this.$router.push({path: `edit/${id}`});
 		},
-		pushDetails({ id  }) {
-			this.$router.push({path: `details/${id}`});
-		},
+		// pushDetails({ id  }) {
+		// 	this.$router.push({path: `details/${id}`});
+		// },
 		async deleteById({ id: deleteId }) {
 			try {
 				const res = await fetch(deleteUrl({ id: deleteId }), {

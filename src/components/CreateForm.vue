@@ -8,6 +8,14 @@
 				</button>
 			</div>
 		</div>
+		<div v-show="isComplete">
+			<div class="alert alert-success alert-dismissible fade show">
+				Created
+				<button type="button" class="close" @click="removeMessage" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		</div>
 		<div id="create-form">
 			<Form @submited="createAnimal" v-bind:canEdit="true"></Form>
 		</div>
@@ -26,6 +34,7 @@ export default {
 	data() {
 		return {
 			errors: [],
+			isComplete: false,
 		};
 	},
 	methods: {
@@ -37,16 +46,19 @@ export default {
 					headers: new Headers({"Content-Type": "application/json"})
 				});
 				console.log(await res.json());
-				this.success = true;
+				this.isComplete = true;
 				// this.$router.router.back()
-				setTimeout(this.$router.replace("/"), 3);
+				// setTimeout(this.$router.replace("/"), 3);
 			} catch (err) {
 				this.errors.push(err);
 			}
 		},
 		popError(index) {
 			this.errors.splice(index, 1);
-		}
+		},
+		removeMessage() {
+			this.isComplete = !this.isComplete;
+		},
 	},
 	computed: {
 		isEmpty() {

@@ -1,19 +1,19 @@
 <template>
 	<div id="form">
+		<div v-show="!isEmpty">
+			<div v-for="(error, index) in errors" class="alert alert-danger alert-dismissible fade show" :key="index">
+				{{ error }}
+				<button type="button" class="close" @click="popError(index)" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		</div>
 		<div v-if="isLoading" class="d-flex justify-content-center">
 			<div class="spinner-border" role="status">
 				<span class="sr-only">Loading...</span>
 			</div>
 		</div>
-		<div v-else-if="!isEmpty">
-			<div v-for="error in errors" class="alert alert-danger" role="alert" :key="error">
-				{{ error }}
-			</div>
-			<div class="alert alert-danger">
-				<a href="/"> Go home </a>
-			</div>
-		</div>
-		<div v-else id="form">
+		<div v-else id="form" class="row justify-content-center">
 			<form @submit.prevent="onSubmit">
 				<div class="form-row align-items-center">
 					<fieldset>
@@ -68,7 +68,7 @@ export default {
 				this.isLoading = true;
 				const res = await fetch(getByIdUrl({ id: id }));
 				const data = await res.json();
-				if(data.name && data.specie)
+				if (data.name && data.specie)
 					this.animal = data;
 				else 
 					throw "Animal not found";
@@ -77,7 +77,13 @@ export default {
 			} finally {
 				this.isLoading = false;
 			}
-		}
+		},
+		popError(index) {
+			this.errors.splice(index, 1);
+		},
+		removeMessage() {
+			this.isComplete = false;
+		},
 	},
 	computed: {
 		isValidName() {
@@ -95,7 +101,7 @@ export default {
 		},
 		isEmpty() {
 			return this.errors.length === 0;
-		}
+		},
 	},
 	props: {
 		canEdit: {
@@ -106,4 +112,9 @@ export default {
 </script>
 
 <style>
+#form {
+	position: relative;
+	left: 0;
+	right: 0;
+}
 </style>

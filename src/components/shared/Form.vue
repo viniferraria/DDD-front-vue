@@ -82,12 +82,12 @@ export default {
 	computed: {
 		isValidName() {
 			if(this.animal.name) 
-				return this.animal.name.length >= 4;
+				return this.animal.name.length > 0;
 			return false;
 		},
 		isValidSpecie() {
 			if(this.animal.specie)
-				return this.animal.specie.length >= 4;
+				return this.animal.specie.length > 0;
 			return false;
 		},
 		isValidForm() {

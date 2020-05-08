@@ -51,7 +51,6 @@ export default {
 				formData.append("file", this.file);
 				this.isLoading = true;
 				const res = await fetch(bulkUrl, {
-					headers: {"Content-Type": "multipart/form-data"},
 					method: "post",
 					body: formData,
 				});
@@ -61,7 +60,7 @@ export default {
 				this.errors.push(err);
 			} finally {
 				this.isLoading = false;
-				this.file = null;
+				// this.file = null;
 			}
 		},
 		handleFileUpload({ target }) {
